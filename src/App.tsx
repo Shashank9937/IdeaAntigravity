@@ -1,0 +1,138 @@
+import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import {
+    LayoutDashboard, BrainCircuit, Lightbulb, UserCircle,
+    Swords, Calculator, LineChart, CalendarDays,
+    Trash2, Activity, CheckSquare, Target,
+    Zap,
+    Rocket
+} from 'lucide-react';
+import { StoreProvider } from './store';
+
+// Importing new pages
+import { Dashboard } from './pages/Dashboard';
+import { PainMining } from './pages/PainMining';
+import { IdeaLog } from './pages/IdeaLog';
+import { PersonaBuilder } from './pages/PersonaBuilder';
+import { SprintPlanner } from './pages/SprintPlanner';
+import { CompetitorBoard } from './pages/CompetitorBoard';
+import { ValidationTracker } from './pages/ValidationTracker';
+import { MarketSizing } from './pages/MarketSizing';
+import { AntiPattern } from './pages/AntiPattern';
+import { DisciplineTracker } from './pages/DisciplineTracker';
+import { Monetization } from './pages/Monetization';
+import { TrendRadar } from './pages/TrendRadar';
+
+const NAV_ITEMS = [
+    { path: '/', label: 'Overview Dashboard', icon: LayoutDashboard },
+    { path: '/pain-mining', label: 'Pain Mining Lab', icon: BrainCircuit },
+    { path: '/ideas', label: 'Idea Log Engine', icon: Lightbulb },
+    { path: '/persona', label: 'Customer Persona', icon: UserCircle },
+    { path: '/competitors', label: 'Competitor Intel', icon: Swords },
+    { path: '/market-size', label: 'Market Sizing', icon: Calculator },
+    { path: '/monetization', label: 'Monetization Model', icon: LineChart },
+    { path: '/sprint', label: '30-Day Sprint Plan', icon: CalendarDays },
+    { path: '/validation', label: 'Validation Tracker', icon: CheckSquare },
+    { path: '/anti-patterns', label: 'Anti-Pattern File', icon: Trash2 },
+    { path: '/trends', label: 'Trend Radar', icon: Activity },
+    { path: '/discipline', label: 'Discipline Tracker', icon: Target },
+];
+
+function Sidebar() {
+    const location = useLocation();
+
+    return (
+        <div className="sidebar py-6 flex flex-col items-stretch">
+            <div className="px-6 mb-8 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-white to-[#888] text-black flex items-center justify-center font-bold shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                    <Rocket size={20} />
+                </div>
+                <div>
+                    <span className="font-bold tracking-widest text-sm block">FOUNDER</span>
+                    <span className="text-xs uppercase tracking-[0.2em] text-muted block">War Room</span>
+                </div>
+            </div>
+
+            <div className="flex-col gap-1 flex flex-1 overflow-y-auto w-full px-2">
+                {NAV_ITEMS.map((item) => {
+                    const Icon = item.icon
+                    const isActive = location.pathname === item.path
+                    return (
+                        <Link
+                            key={item.path}
+                            to={item.path}
+                            className={`nav-item rounded-lg py-2.5 px-4 mb-0.5 w-full mx-0.5 hover:bg-[#1a1a1a] ${isActive ? 'active bg-white text-black font-semibold shadow-[0_4px_10px_rgba(255,255,255,0.1)] hover:bg-white hover:text-black' : ''}`}
+                        >
+                            <Icon size={18} className={isActive ? 'text-black' : 'text-muted'} />
+                            {item.label}
+                        </Link>
+                    )
+                })}
+            </div>
+
+            <div className="px-4 mt-6">
+                <div className="p-5 rounded-xl bg-[#0a0a0a] border border-[#222] shadow-inner text-xs text-muted">
+                    <p className="font-bold text-white uppercase tracking-wider mb-2">Operating Velocity</p>
+                    <div className="flex gap-2">
+                        <span className="flex-1 bg-[#1a1a1a] text-center py-2 rounded font-mono text-accent">V_1.0.0</span>
+                        <span className="flex-1 bg-[#1a1a1a] text-center py-2 rounded font-mono text-success flex items-center justify-center gap-1"><Zap size={10} />LIVE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+function MainLayout() {
+    const location = useLocation();
+    const currentPathName = NAV_ITEMS.find(i => i.path === location.pathname)?.label || 'War Room';
+
+    return (
+        <div className="app-layout">
+            <Sidebar />
+            <div className="main-content relative bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#111] via-[#050505] to-black">
+                {/* Subtle noise texture or grid can go here */}
+
+                <header className="header justify-between py-6 px-10 border-b-0">
+                    <div>
+                        <h2 className="text-2xl font-bold tracking-tight text-white mb-0">{currentPathName}</h2>
+                        <p className="text-sm text-muted font-mono mt-1">/shashank/hq{location.pathname}</p>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <div className="px-3 py-1.5 rounded-full bg-warning/10 text-warning text-xs font-bold border border-warning/20 uppercase tracking-widest flex items-center gap-2">
+                            <Target size={12} /> Execute
+                        </div>
+                    </div>
+                </header>
+
+                <div className="content-container pt-2 px-10 pb-20">
+                    <Routes>
+                        <Route path="/" element={<Dashboard />} />
+                        <Route path="/pain-mining" element={<PainMining />} />
+                        <Route path="/ideas" element={<IdeaLog />} />
+                        <Route path="/persona" element={<PersonaBuilder />} />
+                        <Route path="/competitors" element={<CompetitorBoard />} />
+                        <Route path="/market-size" element={<MarketSizing />} />
+                        <Route path="/monetization" element={<Monetization />} />
+                        <Route path="/sprint" element={<SprintPlanner />} />
+                        <Route path="/validation" element={<ValidationTracker />} />
+                        <Route path="/anti-patterns" element={<AntiPattern />} />
+                        <Route path="/trends" element={<TrendRadar />} />
+                        <Route path="/discipline" element={<DisciplineTracker />} />
+                    </Routes>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+function App() {
+    return (
+        <StoreProvider>
+            <BrowserRouter>
+                <MainLayout />
+            </BrowserRouter>
+        </StoreProvider>
+    )
+}
+
+export default App
