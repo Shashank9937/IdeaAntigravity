@@ -1,10 +1,10 @@
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import {
     LayoutDashboard, BrainCircuit, Lightbulb, UserCircle,
     Swords, Calculator, LineChart, CalendarDays,
     Trash2, Activity, CheckSquare, Target,
-    Zap,
-    Rocket
+    Zap, Rocket, Moon, Sun
 } from 'lucide-react';
 import { StoreProvider } from './store';
 
@@ -37,6 +37,33 @@ const NAV_ITEMS = [
     { path: '/discipline', label: 'Discipline Tracker', icon: Target },
 ];
 
+export function ThemeToggle() {
+    const [isDark, setIsDark] = useState(() => {
+        return !document.documentElement.classList.contains('light');
+    });
+
+    useEffect(() => {
+        const root = document.documentElement;
+        if (isDark) {
+            root.classList.remove('light');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            root.classList.add('light');
+            localStorage.setItem('theme', 'light');
+        }
+    }, [isDark]);
+
+    return (
+        <button
+            onClick={() => setIsDark(!isDark)}
+            className="p-2 rounded-full hover:bg-hover transition-colors text-muted hover:text-main flex items-center justify-center"
+            aria-label="Toggle theme"
+        >
+            {isDark ? <Sun size={18} /> : <Moon size={18} />}
+        </button>
+    );
+}
+
 function Sidebar() {
     const location = useLocation();
 
@@ -60,9 +87,9 @@ function Sidebar() {
                         <Link
                             key={item.path}
                             to={item.path}
-                            className={`nav-item rounded-lg py-2.5 px-4 mb-0.5 w-full mx-0.5 hover:bg-[#1a1a1a] ${isActive ? 'active bg-white text-black font-semibold shadow-[0_4px_10px_rgba(255,255,255,0.1)] hover:bg-white hover:text-black' : ''}`}
+                            className={`nav-item rounded-lg py-2.5 px-4 mb-0.5 w-full mx-0.5 ${isActive ? 'active' : ''}`}
                         >
-                            <Icon size={18} className={isActive ? 'text-black' : 'text-muted'} />
+                            <Icon size={18} className={isActive ? 'text-accent' : 'text-muted'} />
                             {item.label}
                         </Link>
                     )
@@ -70,11 +97,11 @@ function Sidebar() {
             </div>
 
             <div className="px-4 mt-6">
-                <div className="p-5 rounded-xl bg-[#0a0a0a] border border-[#222] shadow-inner text-xs text-muted">
-                    <p className="font-bold text-white uppercase tracking-wider mb-2">Operating Velocity</p>
+                <div className="p-5 rounded-xl bg-card border shadow-inner text-xs text-muted">
+                    <p className="font-bold text-main uppercase tracking-wider mb-2">Operating Velocity</p>
                     <div className="flex gap-2">
-                        <span className="flex-1 bg-[#1a1a1a] text-center py-2 rounded font-mono text-accent">V_1.0.0</span>
-                        <span className="flex-1 bg-[#1a1a1a] text-center py-2 rounded font-mono text-success flex items-center justify-center gap-1"><Zap size={10} />LIVE</span>
+                        <span className="flex-1 bg-main text-center py-2 rounded font-mono text-accent">V_1.0.0</span>
+                        <span className="flex-1 bg-main text-center py-2 rounded font-mono text-success flex items-center justify-center gap-1"><Zap size={10} />LIVE</span>
                     </div>
                 </div>
             </div>
@@ -89,16 +116,17 @@ function MainLayout() {
     return (
         <div className="app-layout">
             <Sidebar />
-            <div className="main-content relative from-[#111] via-[#050505] to-black">
+            <div className="main-content relative">
 
                 <header className="header justify-between">
                     <div>
-                        <h2 className="text-2xl font-bold tracking-tight text-white m-0">{currentPathName}</h2>
+                        <h2 className="text-2xl font-bold tracking-tight text-main m-0">{currentPathName}</h2>
                         <p className="text-sm text-muted font-mono mt-1 w-full truncate max-w-[200px] sm:max-w-none">
                             /shashank/hq{location.pathname}
                         </p>
                     </div>
                     <div className="flex items-center gap-4">
+                        <ThemeToggle />
                         <div className="badge badge-warning flex items-center gap-1">
                             <Target size={12} /> EXECUTE
                         </div>

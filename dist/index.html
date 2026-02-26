@@ -22,8 +22,8 @@
   <style>
     /* Inline critical CSS to prevent FOUC & CLS */
     body {
-      background-color: #050505;
-      color: #ededed;
+      background-color: var(--bg-main, #050505);
+      color: var(--text-main, #ededed);
       margin: 0;
       font-family: 'Inter', sans-serif;
     }
@@ -34,8 +34,20 @@
       flex-direction: column;
     }
   </style>
-  <script type="module" crossorigin src="/assets/index-DaiCJQcX.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-DjOXoIfh.css">
+  <!-- Theme initialization to prevent flash of wrong theme -->
+  <script>
+    (function () {
+      try {
+        var localTheme = localStorage.getItem('theme');
+        var sysTheme = window.matchMedia('(prefers-color-scheme: light)').matches;
+        if (localTheme === 'light' || (!localTheme && sysTheme)) {
+          document.documentElement.classList.add('light');
+        }
+      } catch (e) { }
+    })();
+  </script>
+  <script type="module" crossorigin src="/assets/index-Dvme2IWL.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-CKs8k6w1.css">
 </head>
 
 <body>
