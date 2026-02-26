@@ -41,7 +41,7 @@ function Sidebar() {
     const location = useLocation();
 
     return (
-        <div className="sidebar py-6 flex flex-col items-stretch">
+        <nav className="sidebar p-0 flex flex-col items-stretch">
             <div className="px-6 mb-8 flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-white to-[#888] text-black flex items-center justify-center font-bold shadow-[0_0_15px_rgba(255,255,255,0.2)]">
                     <Rocket size={20} />
@@ -78,7 +78,7 @@ function Sidebar() {
                     </div>
                 </div>
             </div>
-        </div>
+        </nav>
     )
 }
 
@@ -89,22 +89,23 @@ function MainLayout() {
     return (
         <div className="app-layout">
             <Sidebar />
-            <div className="main-content relative bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#111] via-[#050505] to-black">
-                {/* Subtle noise texture or grid can go here */}
+            <div className="main-content relative from-[#111] via-[#050505] to-black">
 
-                <header className="header justify-between py-6 px-10 border-b-0">
+                <header className="header justify-between">
                     <div>
-                        <h2 className="text-2xl font-bold tracking-tight text-white mb-0">{currentPathName}</h2>
-                        <p className="text-sm text-muted font-mono mt-1">/shashank/hq{location.pathname}</p>
+                        <h2 className="text-2xl font-bold tracking-tight text-white m-0">{currentPathName}</h2>
+                        <p className="text-sm text-muted font-mono mt-1 w-full truncate max-w-[200px] sm:max-w-none">
+                            /shashank/hq{location.pathname}
+                        </p>
                     </div>
                     <div className="flex items-center gap-4">
-                        <div className="px-3 py-1.5 rounded-full bg-warning/10 text-warning text-xs font-bold border border-warning/20 uppercase tracking-widest flex items-center gap-2">
-                            <Target size={12} /> Execute
+                        <div className="badge badge-warning flex items-center gap-1">
+                            <Target size={12} /> EXECUTE
                         </div>
                     </div>
                 </header>
 
-                <div className="content-container pt-2 px-10 pb-20">
+                <main className="content-container">
                     <Routes>
                         <Route path="/" element={<Dashboard />} />
                         <Route path="/pain-mining" element={<PainMining />} />
@@ -119,7 +120,19 @@ function MainLayout() {
                         <Route path="/trends" element={<TrendRadar />} />
                         <Route path="/discipline" element={<DisciplineTracker />} />
                     </Routes>
-                </div>
+                </main>
+
+                <footer className="w-full border-t flex items-center justify-between p-6 mt-auto text-xs text-muted">
+                    <div className="flex gap-4">
+                        <span>&copy; {new Date().getFullYear()} FOUNDER OS</span>
+                        <span className="hidden sm:inline">|</span>
+                        <span className="hidden sm:inline px-2">System V_1.0.0</span>
+                    </div>
+                    <div className="flex gap-4 uppercase font-semibold">
+                        <a href="#" className="hover:text-white transition-colors">Documentation</a>
+                        <a href="#" className="hover:text-white transition-colors">Support</a>
+                    </div>
+                </footer>
             </div>
         </div>
     )
