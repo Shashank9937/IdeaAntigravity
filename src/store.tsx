@@ -305,6 +305,10 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         updateState({ trends: [{ ...item, id: generateId() }, ...state.trends] });
     };
 
+    const addDiscipline = (item: Omit<DisciplineEntry, 'id'>) => {
+        updateState({ discipline: [{ ...item, id: generateId() }, ...state.discipline] });
+    };
+
     const addExecutionMetric = (item: Omit<ExecutionMetrics, 'week'>) => {
         const week = `W${state.executionHistory.length + 1}`;
         updateState({ executionHistory: [...state.executionHistory, { ...item, week }] });

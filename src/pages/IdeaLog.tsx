@@ -1,15 +1,6 @@
 import { useState } from 'react';
 import { useStore } from '../store';
-import { Plus, SortDesc, Zap, Link2 } from 'lucide-react';
-
-const STATUS_COLORS: Record<string, string> = {
-    "🌱 Seed": "badge-warning",
-    "🔍 Exploring": "badge-primary",
-    "✅ Active": "badge-success",
-    "⏸ Paused": "badge",
-    "❌ Dropped": "badge-danger",
-    "💡 Revisit": "badge-warning"
-};
+import { Plus, Zap } from 'lucide-react';
 
 export function IdeaLog() {
     const { state, addIdea } = useStore();
@@ -37,7 +28,7 @@ export function IdeaLog() {
         setShowModal(false);
     };
 
-    const ideas = filter === 'All' ? state.ideas : state.ideas.filter(i => i.status === filter);
+    const ideas = filter === 'All' ? state.ideas : state.ideas.filter((i) => i.status === filter);
     const sortedIdeas = [...ideas].sort((a, b) => b.iceScore - a.iceScore);
 
     const getUnicornProbabilityColor = (score: number) => {
