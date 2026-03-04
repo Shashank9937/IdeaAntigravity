@@ -147,7 +147,44 @@ const defaultState: AppState = {
 function loadState(): AppState {
     try {
         const saved = localStorage.getItem('warRoomState');
-        if (saved) return JSON.parse(saved);
+        if (saved) {
+            const parsed = JSON.parse(saved);
+
+            const safeIdeas = (parsed.ideas || []).map((idea: any) => ({
+                ...idea,
+                founderFit: idea.founderFit || {
+                    leverageAssets: 1, visionAlign: 1, build30Days: 1, compoundPotential: 1, score: 4, isMisaligned: false
+                },
+                scalabilityIndex: idea.scalabilityIndex || {
+                    marketSize: 5, networkEffects: 5, marginPotential: 5, capitalEfficiency: 5, defensibility: 5, total: 25
+                },
+                secondOrderThinking: idea.secondOrderThinking || {
+                    successImpact: '', adjacentMarkets: '', networkEffects: '', platformExpandable: '', platformScore: 5
+                },
+                monetizationStress: idea.monetizationStress || {
+                    breakEvenCustomers: 0, revAt100: 0, revAt1000: 0, churnImpact: '', acquisitionDifficulty: ''
+                },
+                marketCalculations: idea.marketCalculations || {
+                    customerCount: 0, arpu: 0, geoMultiplier: 1, adoptionRate: 0.1, tam: 0, sam: 0, som: 0, projection3Year: 0
+                },
+                painIds: idea.painIds || []
+            }));
+
+            return {
+                ...defaultState,
+                ...parsed,
+                pains: parsed.pains || defaultState.pains,
+                ideas: safeIdeas,
+                personas: parsed.personas || defaultState.personas,
+                competitors: parsed.competitors || defaultState.competitors,
+                sprintTasks: parsed.sprintTasks || defaultState.sprintTasks,
+                validations: parsed.validations || defaultState.validations,
+                antiPatterns: parsed.antiPatterns || defaultState.antiPatterns,
+                trends: parsed.trends || defaultState.trends,
+                discipline: parsed.discipline || defaultState.discipline,
+                executionHistory: parsed.executionHistory || defaultState.executionHistory
+            };
+        }
     } catch (e) { }
     return defaultState;
 }
